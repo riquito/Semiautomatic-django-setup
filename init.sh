@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 function usage
 {
@@ -15,11 +15,33 @@ if [ ! -e $1 ]; then
   chmod 2750 $1
 fi
 
+getPython2 ()
+{
+  local mostRecent=""
+  local res=""
+  for i in /usr/bin/python*; do
+    echo $i | grep -q "python2\(\.[5-7]\)$";
+    res=$?
+    if [ $res -eq 0 ]; then
+      mostRecent=$i
+    fi
+  done
+
+  echo $mostRecent;
+}
+
+pyPath=`getPython2`
+
+if [ "$pyPath" == "" ]; then
+  echo "Error: python 2.x is required"
+  exit 1
+fi 
+
 cp -R requirements $1
 cd $1
 
-curl -O https://raw.github.com/pypa/virtualenv/master/virtualenv.py
-python2 virtualenv.py --no-site-packages .env
+wget https://raw.github.com/pypa/virtualenv/master/virtualenv.py
+$pyPath virtualenv.py --no-site-packages .env
 
 source .env/bin/activate
 
