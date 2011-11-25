@@ -1,0 +1,11 @@
+Django
+South
+Fabric
+MySQL-python
+PIL
+
+cssmin
+django-compressor
+
+html5lib
+bleach
