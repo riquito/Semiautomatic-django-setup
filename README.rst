@@ -10,10 +10,11 @@ How to start
 
 will
 
-* create newDjangoDir (chmod 2750) if not present
+* create newDjangoDir (chmod 2750) if not present, and enter it
 * download *virtualenv* and install it along with *pip* in the .env directory
 * enter virtual environment
-* install it will download and install *virtualenv* (by default in the .env directory).
+* install the libraries listed in requirements/default_install.txt
+* create a django project inside newDjangoDir
 
 Caveat
 ------
