@@ -13,8 +13,9 @@ will
 * create newDjangoDir (chmod 2750) if not present, and enter it
 * download *virtualenv* and install it along with *pip* in the .env directory
 * enter virtual environment
-* install the libraries listed in requirements/default_install.txt
-* create a django project inside newDjangoDir
+* install the libraries listed in base_project/requirements/default_install.txt
+* copy the content of base_project into newDjangoDir 
+
 
 Caveat
 ------

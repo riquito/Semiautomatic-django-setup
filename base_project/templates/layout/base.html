@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>{% load i18n %}
+  <meta charset="utf-8">
+  <title></title>
+  
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  
+  {% block metarobots %}{% endblock %}
+  
+  <link rel="shortcut icon" href="{{ STATIC_URL }}public/img/favicon.ico" type="image/x-icon" />
+
+  {% block reset-css %}
+  <link rel="stylesheet" href="{{ STATIC_URL }}public/css/normalize.css" />
+  {% endblock %}
+   
+  {% block stylesheet %}
+  <link rel="stylesheet" href="{{ STATIC_URL }}public/css/main.css" />
+  {% endblock %}
+  
+  {% block head-javascript %}
+     {# here goes the javascript code that for some reason MUST be in the head tag #}
+     <!-- when ready pass to a custom version of modernizr --> 
+     <script src="//ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.0.6-development-only.js"></script>
+  {% endblock %}
+  
+</head>
+<body id="body">
+
+    {% block base_content %}
+      {% block content %}
+
+      {% endblock %}
+      
+    {% endblock %}
+    
+    {% block javascript %}
+      {# most of the javascript code should be here #}
+      
+    {% endblock %}
+
+</body>
+</html>

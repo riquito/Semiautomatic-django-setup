@@ -1,0 +1,14 @@
+{% extends "layout/header_footer.html" %}
+{% load i18n %}
+
+{% block content %}
+  Check translation: {% trans "Hello world"%}
+  <br/>
+  Check encoding (western characters): Iñtërnâtiônàlizætiøn 
+  <br/>
+  Check encoding (mojibake): 文字化け
+  <br/>
+  Check encoding (krakozyabry): кракозя́бры
+  <br/>
+  Check encoding (arabic): الإعلان العالمى لحقوق الإنسان
+{% endblock %}

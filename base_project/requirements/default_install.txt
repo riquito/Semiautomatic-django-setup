@@ -1,0 +1,25 @@
+Django==1.3.1
+
+# easy deploy and automatic tasks over ssh
+Fabric==1.3.3
+
+# MySQL python bindings. Might require external dependencies
+MySQL-python==1.2.3
+
+# Python Image Library to process images
+PIL==1.1.7
+
+# Database schema migrations
+South==0.7.3
+
+# Input sanitizing
+bleach==1.1.0
+
+# Css parser and minifier
+cssmin==0.1.4
+
+# Compress css and javascript files to the least possible number
+django-compressor==1.1.1
+
+# Html parser based on HTML5 specification
+html5lib==0.90

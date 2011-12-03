@@ -1,0 +1,34 @@
+{% extends "layout/content_only.html" %}
+
+{% block pre_main_content %}
+    <header id="main-header">
+        
+        {% block header %}
+        <div class="main-width" style="">
+         
+        </div>
+        {% endblock %}
+    
+    </header>
+{% endblock %}
+
+
+{% block post_main_content %}
+    <footer id="main-footer" class="main-width">
+        <span>
+            © Foo Bar
+        </span>
+    </footer>
+{% endblock %}
+
+{% block stylesheet %}
+  {{ block.super }}
+   
+   
+{% endblock %}
+    
+{% block javascript %}
+  {{ block.super }}
+  
+
+{% endblock %}

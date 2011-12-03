@@ -1,0 +1,26 @@
+{% extends "layout/base.html" %}
+
+{% block base_content %}
+
+  {% block pre_main_content %}{% endblock %}
+  <section id="main-content" class="main-width">
+    {% block content %}
+      
+    {% endblock %}
+  </section>
+  {% block post_main_content %}{% endblock %}
+
+{% endblock %}
+
+{% block stylesheet %}
+  {{ block.super }}
+  
+
+{% endblock %}
+
+{% block javascript %}
+  {{ block.super }}
+  
+  
+{% endblock %}
+

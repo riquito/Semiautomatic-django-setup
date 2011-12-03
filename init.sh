@@ -49,17 +49,13 @@ $pythonBinPath virtualenv.py --no-site-packages .env
 
 source .env/bin/activate
 
-pip install -r requirements/default_install.txt
-pip freeze > requirements/dev.txt
+find ../base_project/ -maxdepth 1 -mindepth 1 -exec cp -R '{}' .  \;
 
-django-admin startproject $PROJECT_NAME
-find $PROJECT_NAME -maxdepth 1 -mindepth 1 -exec cp -R '{}' .  \;
-rm -fr $PROJECT_NAME
+mv requirements/default_install.txt requirements/dev.txt
+pip install -r requirements/dev.txt
+#pip freeze > requirements/dev.txt # at present is missing dependencies
 
-mkdir apps
-touch apps/__init__.py
-
-rm -f virtualenv.py virtualenv.pyc requirements/default_install.txt
+find . -name "*.pyc" -exec rm '{}' \;
 
 deactivate
 
