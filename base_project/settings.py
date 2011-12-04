@@ -3,13 +3,15 @@
 # Django settings
 
 import os
-ugettext = lambda s: s
 
 PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 COMPRESS_ENABLED = not DEBUG
+
+# use a "dummy" ugettext() function to mark translatable strings
+ugettext = lambda s: s 
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -50,6 +52,15 @@ USE_I18N = True
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale
 USE_L10N = True
+
+# Additional directories to scan for localizations. Have the highest priority
+LOCALE_PATHS = [os.path.join(PROJECT_PATH,'locale/')]
+
+LANGUAGES = (
+    ('en', ugettext('English')),
+    # add here other locales
+
+)
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
@@ -106,6 +117,10 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    # LocaleMiddleware must be after SessionMiddleware
+    'django.middleware.locale.LocaleMiddleware',
+
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
