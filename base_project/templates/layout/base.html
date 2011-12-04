@@ -3,7 +3,7 @@
 <!--[if IE 7]>    <html class="no-js ie7"> <![endif]-->
 <!--[if IE 8]>    <html class="no-js ie8"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-<head>{% load i18n %}
+<head>{% load i18n compress %}
   <meta charset="utf-8">
   <title></title>
   
@@ -16,6 +16,8 @@
   {% block metarobots %}{% endblock %}
   
   <link rel="shortcut icon" href="{{ STATIC_URL }}public/img/favicon.ico" type="image/x-icon" />
+  
+  {% compress css %}
 
   {% block reset-css %}
   <link rel="stylesheet" href="{{ STATIC_URL }}public/css/normalize.css" />
@@ -24,12 +26,20 @@
   {% block stylesheet %}
   <link rel="stylesheet" href="{{ STATIC_URL }}public/css/main.css" />
   {% endblock %}
+
+  {% endcompress %}
+
+  {% compress js %}
   
   {% block head-javascript %}
-     {# here goes the javascript code that for some reason MUST be in the head tag #}
+     {# here goes javascript code that for some rare reason should go in the head tag #}
      <!-- when ready pass to a custom version of modernizr --> 
-     <script src="//ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.0.6-development-only.js"></script>
+     <script src="{{ STATIC_URL }}public/js/modernizr-full.js"></script>
+
   {% endblock %}
+
+  {% endcompress %}
+
   
 </head>
 <body id="body">
@@ -40,11 +50,16 @@
       {% endblock %}
       
     {% endblock %}
-    
+
+    {% compress js %}
+
     {% block javascript %}
       {# most of the javascript code should be here #}
       
     {% endblock %}
+
+    {% endcompress %}
+
 
 </body>
 </html>
