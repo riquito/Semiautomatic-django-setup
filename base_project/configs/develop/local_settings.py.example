@@ -1,0 +1,23 @@
+# -*- coding: utf-8 -*-
+
+# Make this unique, and don't share it with anybody.
+SECRET_KEY = '?G</_t),RU,hZ&MR&H#XCyvK)I87_uM<cvYq97*GAYqUnZ8+zx'
+
+ADMINS = (
+   # ('Your Name', 'your_email@domain.com'),
+)
+
+MANAGERS = ADMINS
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': '',                      # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+    }
+}
+
+#INTERNAL_IPS = ('127.0.0.1',)
