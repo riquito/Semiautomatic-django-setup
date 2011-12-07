@@ -45,7 +45,8 @@ cp -R requirements $PROJECT_PATH
 cd $PROJECT_PATH
 
 wget https://raw.github.com/pypa/virtualenv/master/virtualenv.py
-$pythonBinPath virtualenv.py --no-site-packages .env
+$pythonBinPath virtualenv.py .env
+rm virtualenv.py
 
 source .env/bin/activate
 
