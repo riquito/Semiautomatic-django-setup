@@ -10,7 +10,7 @@ if [ $# -ne 1 -o $# -eq 0 -o "$1" == "-h" ]; then
   exit 1
 fi
 
-ORIG_DIR=`pwd`
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_PATH=$1
 PROJECT_NAME=`basename $PROJECT_PATH`
 
@@ -49,14 +49,15 @@ $pythonBinPath virtualenv.py --no-site-packages .env
 
 source .env/bin/activate
 
-find ../base_project/ -maxdepth 1 -mindepth 1 -exec cp -R '{}' .  \;
+find "$SCRIPT_DIR/base_project/" -maxdepth 1 -mindepth 1 -exec cp -R '{}' .  \;
 
 mv requirements/default_install.txt requirements/dev.txt
 pip install -r requirements/dev.txt
 #pip freeze > requirements/dev.txt # at present is missing dependencies
 
+find var/ -type d -exec chmod g+w '{}' \;
 find . -name "*.pyc" -exec rm '{}' \;
 
 deactivate
 
-cd $ORIG_DIR
+cd $SCRIPT_DIR
