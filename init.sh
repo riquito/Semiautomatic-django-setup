@@ -68,6 +68,13 @@ touch var/log/apache-error.log
 touch var/log/django.log
 chmod g+w var/log/*.log
 
+# Do a default round of django calls to have all up and running
+# (will work for both develop and production settings)
+python manage.py makemessages -a
+python manage.py compilemessages
+python manage.py collectstatic --noinput
+python manage.py compress --force
+
 # Remove unneeded files
 find . -name "*.pyc" -exec rm '{}' \;
 rm virtualenv.py
