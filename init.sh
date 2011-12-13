@@ -14,6 +14,10 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_PATH=$1
 PROJECT_NAME=`basename $PROJECT_PATH`
 
+ORIG_UMASK=`umask`
+umask 0027 # -rw-r----- # files or directories needing group write
+           # drwxr-x--- # will get it later
+
 if [ ! -e $PROJECT_PATH ]; then
   mkdir $PROJECT_PATH
   chmod 2750 $PROJECT_PATH
@@ -41,24 +45,36 @@ if [ "$pythonBinPath" == "" ]; then
   exit 1
 fi 
 
-cp -R requirements $PROJECT_PATH
 cd $PROJECT_PATH
 
 wget https://raw.github.com/pypa/virtualenv/master/virtualenv.py
-$pythonBinPath virtualenv.py .env
-rm virtualenv.py
+$pythonBinPath virtualenv.py .env # by default ignore system packages
 
-source .env/bin/activate
+source .env/bin/activate # enter virtual environment
 
 find "$SCRIPT_DIR/base_project/" -maxdepth 1 -mindepth 1 -exec cp -R '{}' .  \;
 
+# Install needed libraries
 mv requirements/default_install.txt requirements/dev.txt
 pip install -r requirements/dev.txt
 #pip freeze > requirements/dev.txt # at present is missing dependencies
 
-find var/ -type d -exec chmod g+w '{}' \;
-find . -name "*.pyc" -exec rm '{}' \;
+# Some directories must be writable by webserver group
+chmod g+w var/log/ var/media var/tmp
 
-deactivate
+# Give logs friendly permissions (current user will be the owner, group will be able to modify them)
+touch var/log/apache-access.log
+touch var/log/apache-error.log
+touch var/log/django.log
+chmod g+w var/log/*.log
+
+# Remove unneeded files
+find . -name "*.pyc" -exec rm '{}' \;
+rm virtualenv.py
+rm -fr build
+
+deactivate # exit virtual environment
+
+umask $ORIG_UMASK
 
 cd $SCRIPT_DIR
