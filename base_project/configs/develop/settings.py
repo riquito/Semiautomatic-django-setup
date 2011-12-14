@@ -200,4 +200,11 @@ COMPRESS_CSS_FILTERS =[
 
 # if set to True you must run "python manage.py compress" after collecting new static files
 COMPRESS_OFFLINE = False
+
+# COMPRESS_ROOT = STATIC_ROOT # where files to compress will be read from
+
+# directory inside COMPRESS_ROOT where files will be written into
+COMPRESS_OUTPUT_DIR = 'CACHE' 
+
+COMPRESS_PARSER = 'compressor.parser.Html5LibParser'
 #########################
