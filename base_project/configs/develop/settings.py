@@ -2,9 +2,12 @@
 
 # Django settings
 
-import os
+import os,sys
 
 PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),'../..'))
+
+# Ensure apps folder is reachable in the python PATH
+sys.path.append(os.path.join(PROJECT_PATH,'apps'))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -144,31 +147,48 @@ CACHES = {
     }
 }
 
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error.
+# A sample logging configuration. 
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[%(levelname)s] %(asctime)s <%(name)s> {%(module)s} %(message)s'
+        },
+        'simple': {
+            'format': '[%(levelname)s] %(message)s'
+        },
+    },
     'handlers': {
+        'null': {
+            'level':'DEBUG',
+            'class':'django.utils.log.NullHandler'
+        },
         'mail_admins': {
             'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler'
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'verbose'
         },
         'file': {
-            'level': 'ERROR',
+            'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(PROJECT_PATH,'var/log/django-errors.log')
+            'filename': os.path.join(PROJECT_PATH,'var/log/django.log'),
+            'formatter': 'verbose'
         }
     },
     'loggers': {
-        'django.request': {
-            'handlers': ['file','mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
+        '': {
+          'handlers': ['null'],
+          'propagate': True,
+          'level': 'INFO'
         },
+        'django': {
+            'handlers': ['file','mail_admins'],
+            'propagate': True,
+            'level':'DEBUG',
+        }
     }
 }
 

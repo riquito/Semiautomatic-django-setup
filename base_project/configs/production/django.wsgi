@@ -2,11 +2,10 @@
 
 import os,sys
 
-sys.stdout = sys.stderr
-
 import glob,site
 from os.path import abspath,dirname,join
 
+# Set environ variable before importing any django related module
 os.environ['DJANGO_SETTINGS_MODULE'] = 'configs.production.settings'
 
 PROJECT_PATH = abspath(join(dirname(__file__), "../../"))
@@ -52,14 +51,13 @@ import django.core.handlers.wsgi
 import django.core.signals
 import django.dispatch.dispatcher
 
-my_signal = django.dispatch.dispatcher.Signal()
-
 def log_exception(*args, **kwds):
-    logging.exception('Exception in request:',*args,**kwds)
+    logging.exception('Exception in request:')
 
-# Log errors.
-my_signal.connect(
-    log_exception, django.core.signals.got_request_exception
+# Log errors (should send errors to webserver 
+# only if django logging wasn't active )
+django.core.signals.got_request_exception.connect(
+  log_exception
 )
 
 application = django.core.handlers.wsgi.WSGIHandler()
