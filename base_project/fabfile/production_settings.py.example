@@ -1,0 +1,10 @@
+# -*- coding: utf-8 -*-
+
+env = {}
+
+env['base_path'] = '/abs/path/to/project/'
+env['user'] = '' # user used to connect
+env['deploy_user'] = '' # user used to start commands on remote (if not empty and different from user) (via sudo)
+env['deploy_group'] = ''
+env['hosts'] = ['host1'] # ['host1','host2']
+

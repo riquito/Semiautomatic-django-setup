@@ -1,4 +1,5 @@
 .env/
+fabfile/*_settings.py
 *.pyc
 *.pyo
 *~
