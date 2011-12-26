@@ -24,6 +24,10 @@ CACHES = {
 CACHE_MIDDLEWARE_SECONDS = 60*5
 #############
 
+### LOGGING ###
+LOGGING['handlers']['file']['level'] = 'ERROR'
+###############
+
 try:
     from local_settings import *
 except ImportError:
