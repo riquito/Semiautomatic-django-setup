@@ -284,10 +284,10 @@ Templates
 To simplify the design of the site I added two directories to a global template 
 dir.
 
-* template/layouts
-* template/views
+* templates/layout
+* templates/views
 
-Layouts are templates that give a strutcture to the whole page, while views 
+Layouts are templates that give a structure to the whole page, while views 
 contains inner content. Being the template directory at root of the project 
 somewhat global, only particular views should go there (like an about page) and 
 application related views should stay in that application template directory.
@@ -326,7 +326,7 @@ page.
 surrounding that same container written into "content_only" layout.
 
 This are the most generic layouts I could think off, and adding one of them 
-(e.g. a two column layout) is dead simple. Create the file in templates/layouts 
+(e.g. a two column layout) is dead simple. Create the file in templates/layout/ 
 and ensure it has a block named "content".
 
 Fabric and deployment
