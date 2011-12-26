@@ -23,6 +23,41 @@ if [ ! -e $PROJECT_PATH ]; then
   chmod 2750 $PROJECT_PATH
 fi
 
+GROUP_PROJECT_DIR=`stat -c %G $PROJECT_PATH`;
+APACHE_GROUP=`grep -E "(www-data|www|http|apache):" /etc/group|cut -d ':' -f 1`
+
+if [ "$GROUP_PROJECT_DIR" != "$APACHE_GROUP" ]; then
+  
+  groups | grep -q "$APACHE_GROUP" # is user in the apache group ?
+  
+  if [ $? -eq 1 -a "`id -u -n`" != "root" ]; then
+    echo "Directory's group is '$GROUP_PROJECT_DIR' and you don't seem to be in apache group '$APACHE_GROUP'. Files inside that directory will inherit his group, so it would be best to set it to the apache group (via \"sudo chgrp $APACHE_GROUP $PROJECT_DIR\"). "
+    read -r -p "Do you want to exit now to correct the problem ? (y/n) " response
+    case $response in
+        [yY][eE][sS]|[yY]) 
+            exit
+            ;;
+    esac
+  
+  else
+    chgrp $APACHE_GROUP $PROJECT_PATH
+  fi
+fi
+
+
+if [ "`stat -c %a $PROJECT_PATH`" != "2750" ]; then
+    groups | grep -q `stat -c %G $PROJECT_PATH`
+    if [ $? -eq 0 ]; then
+      chmod 2750 $PROJECT_PATH
+    else
+      echo
+      echo "Cannot set permissions on $PROJECT_PATH. Please manually run \"sudo chmod 2750 $PROJECT_PATH\""
+      exit;
+
+    fi
+fi
+
+
 getPython2 ()
 {
   local mostRecent=""
