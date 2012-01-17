@@ -208,3 +208,8 @@ COMPRESS_OUTPUT_DIR = 'CACHE'
 
 COMPRESS_PARSER = 'compressor.parser.Html5LibParser'
 #########################
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
