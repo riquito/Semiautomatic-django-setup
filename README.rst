@@ -66,7 +66,7 @@ What does it do?
   default)
 * download *virtualenv* and install it along with *pip* in the .env directory
 * activate virtual environment
-* install the libraries listed in base_project/requirements/default_install.txt
+* install the libraries listed in base_project/requirements/base.txt
 * copy the content of base_project into the directory
 * add group write permissions to some directories (e.g. /var/tmp and /var/log)
 * create some empty log files so that you own them
@@ -78,16 +78,15 @@ How will be the project structured?
 ===================================
 
 * **apps/** # here stay your applications
-* **configs/** # here stay server configurations. There are a couple defaults
-  
-  * **develop/**
-  * **production/**
 * **fabfile/** # fabric files goes here
 * **locale/** # project level locale directory for generic internazionalization
   
   * **en/**
     
     * **LC_MESSAGES/**
+* **mysite/** # here stay urls.py, django.wsgi and server configurations
+  
+  * **settings/** # django configuration files for each environment
 * **requirements/** # whenever you pip freeze your dependencies, put them here
 * **static/** # here are project level static files (e.g. favicon or global css)
   
@@ -130,7 +129,6 @@ Please ignore the content of
 * var/static/
 * var/log/
 * var/tmp/
-* local_settings.py # anywhere
 * fabfile/*_settings.py
 * any *.pyc *.pyo 
 
@@ -160,7 +158,7 @@ Write an unexistent url to see the 404 django error page.
 
 ::
   
-  TARGET="production" python manage.py runserver
+  DJANGO_SETTINGS_MODULE="production" python manage.py runserver
 
 You'll see the same page as before but at refresh it will not update the time 
 written on it (cache enabled). Check the page's source, you'll now find a 
@@ -174,40 +172,30 @@ Understand the settings structure
 
 Settings are stored in
 
-configs/<confname>/settings.py
+mysite/settings/<confname>.py
 
 To create a configuration for your *stage* or *preproduction* server
 
-configs/stage/settings.py
+mysite/settings/stage.py
 
 you'd be able to run it via
 
 ::
   
-  TARGET="stage" python manage.py runserver
+  DJANGO_SETTINGS_MODULE="stage" python manage.py runserver
 
-as you guessed, "develop" is the default target. 
+as you guessed, "local" is the default target. 
 
-Confidential informations are put inside a file named **local_settings.py** in 
-the same directory where settings.py reside. Any local_settings.py file in the 
-project is not versioned by default.
-
-You will find an example inside. Typical data that go there are database 
-passwords and api keys.
+Confidential informations are put inside environment variables to avoid 
+versioning and ensure the configuration files are versioned and shareable.
+See mysite/settings/production.py to discover the environment variable names
+used.
+I suggest you to set the variables in .env/bin/activate
 
 Review the settings
 -------------------
 
-Feel free now to read the content of develop and production settings.py.
-
-Note: the production settings.py inherit the content of develop settings.py and 
-rewrites or add rules. If you don't like such behaviour because you could 
-enable in develop something and forget to mask it in production, you'll have to 
-copy development settings in 
-
-configs/production/
-
-and change/add what you found in the original production settings.py
+Feel free now to read the content of local and production settings.py.
 
 About the content of settings files, what you really need to check and 
 evenctually change are:
@@ -215,13 +203,6 @@ evenctually change are:
 * TIME_ZONE
 * SITE_ID
 * LANGUAGE_CODE and LANGUAGES
-
-Also, in the local_settings.py (you can copy and change the 
-local_settings.py.example)
-
-* SECRET_KEY
-* ADMINS
-* DATABASES
 
 A note about databases
 ----------------------
@@ -265,16 +246,13 @@ Logs are stored at var/logs. There are three logs initially
 debug or higher message in development configuration. The logger name is 
 'django'
 
-Example To log an error in django
+Example to use logging
 
 ::
 
-  from django.utils.log import getLogger
-  logger = getLogger('django')
+  import logging
+  logger = logging.getLogger(__name__)
   logger.debug('debug log test')
-
-Remember to use your own logger name for your applications and to configure it 
-in the LOGGING settings.
 
 Logs are not rotated automatically. You'll have to add a cron job to do it.
 
@@ -354,4 +332,3 @@ inside 'configs/'.
 Author
 ------
 Riccardo Attilio Galli <riccardo@sideralis.org> [http://www.sideralis.org]
-
