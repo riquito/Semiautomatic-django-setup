@@ -4,7 +4,20 @@
 
 import os,sys
 
-PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),'../..'))
+# Normally you should not import ANYTHING from Django directly
+# into your settings, but ImproperlyConfigured is an exception.
+from django.core.exceptions import ImproperlyConfigured
+
+def get_env_variable(var_name):
+    """ Get the environment variable or return exception """
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = "Set the %s environment variable" % var_name
+        raise ImproperlyConfigured(error_msg)
+
+
+PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),'../../'))
 
 # Ensure apps folder is reachable in the python PATH
 sys.path.append(os.path.join(PROJECT_PATH,'apps'))
@@ -23,7 +36,7 @@ ugettext = lambda s: s
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Europe/Rome'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -38,6 +51,9 @@ USE_I18N = True
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale
 USE_L10N = True
+
+# If you set this to False, Django will not use timezone-aware datetimes.
+USE_TZ = True
 
 # Additional directories to scan for localizations. Have the highest priority
 LOCALE_PATHS = [os.path.join(PROJECT_PATH,'locale/')]
@@ -111,11 +127,14 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 
+    # Uncomment the next line for simple clickjacking protection:
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
     # cache
     'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'mysite.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -161,34 +180,54 @@ LOGGING = {
             'format': '[%(levelname)s] %(message)s'
         },
     },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue'
+        }
+    },
     'handlers': {
         'null': {
             'level':'DEBUG',
             'class':'django.utils.log.NullHandler'
         },
+        'console':{
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+            'filters': ['require_debug_true']
+        },
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler',
-            'formatter': 'verbose'
+            'formatter': 'verbose',
+            'filters': ['require_debug_false']
         },
         'file': {
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.WatchedFileHandler',
             'filename': os.path.join(PROJECT_PATH,'var/log/django.log'),
             'formatter': 'verbose'
         }
     },
     'loggers': {
         '': {
-          'handlers': ['null'],
+          'handlers': ['null','console'],
           'propagate': True,
           'level': 'INFO'
         },
         'django': {
-            'handlers': ['file','mail_admins'],
-            'propagate': True,
-            'level':'DEBUG',
-        }
+            'handlers': ['console','file','mail_admins'],
+            'propagate': False,
+            'level':'DEBUG'
+        },
+	'apps': {
+	    'handlers': ['console','file','mail_admins'],
+            'propagate': False,
+            'level':'DEBUG'
+	}
     }
 }
 
@@ -209,7 +248,3 @@ COMPRESS_OUTPUT_DIR = 'CACHE'
 COMPRESS_PARSER = 'compressor.parser.Html5LibParser'
 #########################
 
-try:
-    from local_settings import *
-except ImportError:
-    pass
