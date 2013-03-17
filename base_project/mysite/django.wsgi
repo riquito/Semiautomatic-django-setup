@@ -5,10 +5,10 @@ import os,sys
 import glob,site
 from os.path import abspath,dirname,join
 
-# Set environ variable before importing any django related module
-os.environ['DJANGO_SETTINGS_MODULE'] = 'configs.production.settings'
+# Set environ variable before importing any django related module if empty
+os.environ.setdefault('DJANGO_SETTINGS_MODULE','mysite.settings.production')
 
-PROJECT_PATH = abspath(join(dirname(__file__), "../../"))
+PROJECT_PATH = abspath(join(dirname(__file__), "../"))
 
 VIRTUALENV_LIB_PATH = join(PROJECT_PATH,'.env/lib')
 
