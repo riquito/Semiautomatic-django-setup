@@ -90,9 +90,8 @@ source .env/bin/activate # enter virtual environment
 find "$SCRIPT_DIR/base_project/" -maxdepth 1 -mindepth 1 -exec cp -R '{}' .  \;
 
 # Install needed libraries
-mv requirements/default_install.txt requirements/dev.txt
-pip install -r requirements/dev.txt
-#pip freeze > requirements/dev.txt # at present is missing dependencies
+pip install -r requirements/base.txt
+#pip freeze > requirements/base.txt # at present is missing dependencies
 
 # Some directories must be writable by webserver group
 chmod g+w var/log/ var/media var/tmp

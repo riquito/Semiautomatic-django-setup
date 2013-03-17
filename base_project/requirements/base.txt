@@ -1,7 +1,7 @@
-Django==1.4.1
+Django==1.5.0
 
 # easy deploy and automatic tasks over ssh
-Fabric==1.4.3
+Fabric==1.6
 
 # Python Image Library to process images
 PIL==1.1.7
@@ -10,7 +10,7 @@ PIL==1.1.7
 South==0.7.6
 
 # Input sanitizing
-bleach==1.1.5
+bleach==1.2.1
 
 # Css parser and minifier
 cssmin==0.1.4
