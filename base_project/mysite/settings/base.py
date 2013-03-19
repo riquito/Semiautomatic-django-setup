@@ -5,7 +5,9 @@
 import os,sys
 
 # Normally you should not import ANYTHING from Django directly
-# into your settings, but ImproperlyConfigured is an exception.
+# into your settings, but ImproperlyConfigured  and ugettext_lazy
+# are exceptions.
+from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ImproperlyConfigured
 
 def get_env_variable(var_name):
@@ -26,8 +28,6 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 COMPRESS_ENABLED = not DEBUG
 
-# use a "dummy" ugettext() function to mark translatable strings
-ugettext = lambda s: s 
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -59,7 +59,7 @@ USE_TZ = True
 LOCALE_PATHS = [os.path.join(PROJECT_PATH,'locale/')]
 
 LANGUAGES = (
-    ('en', ugettext('English')),
+    ('en', _('English')),
     # add here other locales
 
 )
