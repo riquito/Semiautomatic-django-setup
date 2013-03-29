@@ -85,6 +85,19 @@ cd $PROJECT_PATH
 wget https://raw.github.com/pypa/virtualenv/master/virtualenv.py
 $pythonBinPath virtualenv.py .env # by default ignore system packages
 
+# setup some environment settings to avoid to have them in a gitted config file
+echo "" >> .env/bin/activate
+echo "export DJANGO_SETTINGS_MODULE='mysite.settings.local'" >> .env/bin/activate
+echo "export DJANGO_SECRET_KEY=''"  >> .env/bin/activate
+echo "export DJANGO_DB_ENGINE=''"   >> .env/bin/activate
+echo "export DJANGO_DB_NAME=''"     >> .env/bin/activate
+echo "export DJANGO_DB_USER=''"     >> .env/bin/activate
+echo "export DJANGO_DB_PASSWORD=''" >> .env/bin/activate
+echo "export DJANGO_DB_HOST=''"     >> .env/bin/activate
+echo "export DJANGO_DB_PORT=''"     >> .env/bin/activate
+echo "" >> .env/bin/activate
+echo "export PYTHONPATH=\$PYTHONPATH:\$VIRTUAL_ENV/../" >> .env/bin/activate
+
 source .env/bin/activate # enter virtual environment
 
 find "$SCRIPT_DIR/base_project/" -maxdepth 1 -mindepth 1 -exec cp -R '{}' .  \;

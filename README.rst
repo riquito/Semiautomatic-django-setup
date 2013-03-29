@@ -188,9 +188,7 @@ as you guessed, "local" is the default target.
 
 Confidential informations are put inside environment variables to avoid 
 versioning and ensure the configuration files are versioned and shareable.
-See mysite/settings/production.py to discover the environment variable names
-used.
-I suggest you to set the variables in .env/bin/activate
+You may find the empty environment variables inside .env/bin/activate
 
 Review the settings
 -------------------
